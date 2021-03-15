@@ -3,6 +3,7 @@ Namedtuple with Strict Type Checking
 
 ## Download
 `pip install typedtuples`
+[View at Pypi](https://pypi.org/project/Typedtuples/)
 
 ## Examples
 ```Python
