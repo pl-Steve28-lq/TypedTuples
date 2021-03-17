@@ -2,8 +2,7 @@
 Namedtuple with Strict Type Checking
 
 ## Download
-`pip install typedtuples`<br>
-[View at Pypi](https://pypi.org/project/Typedtuples/)
+`pip install typedtuples`
 
 ## Examples
 ```Python

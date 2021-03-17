@@ -24,7 +24,7 @@ setuptools.setup(
   description=desc,
   long_description=long_description,
   long_description_content_type='text/markdown',
-  url='https://github.com/pl-Steve28-lq/',
+  url='https://github.com/pl-Steve28-lq/TypedTuples',
   packages=setuptools.find_packages(),
   classifiers=[
     'Programming Language :: Python :: 3',

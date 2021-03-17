@@ -1,34 +1,41 @@
+from typedtuples.utils import toString
+
 class TypedTuple:
     def __init__(self, *args, **kwargs):
         self.initialize(args, kwargs)
     
     def initialize(self, args, kwargs):
         a = self.__annotations__
-        names = list(a.keys())
-        types = list(a.values())
-        kwnames = list(kwargs.keys())
-        kwvalues = list(kwargs.values())
+        
+        names, types = zip(*a.items())
+        kwnames, kwvalues = zip(*kwargs.items())if kwargs else((),())
+        
         for i in range(len(a)):
             n, t = names[i], types[i]
-            if i >= len(args):
-                kwn = kwnames[i]
-                it = kwvalues[i]
-                if kwn != n: raise Exception(
-                    f'Unknown name "{kwn}" found.'
-                )
-            else: it = args[i]
+            isKw = i >= len(args)
+            it = (kwvalues if isKw else args)[i - len(args)*isKw]
+            
+            if isKw:
+                if kwnames[i-len(args)] != n:
+                    raise Exception(f'Unknown name "{kwn}" found.')
+
             valid = isinstance(it, t)
-            if not valid: raise Exception(
-                f'Expect Type "{t.__name__}" but "{it.__class__.__name__}"'
-                f' (at name "{n}", Item {it}) found.'
+            if not valid: self.raiseTypeException(
+                t.__name__, it.__class__.__name__, n, toString(it)
             )
             setattr(self, n, it)
+
+    def raiseTypeException(self, expect, wrong, name, item):
+        raise Exception(
+            f'Expected Type "{expect}" but "{wrong}" found.'
+            f' (at name "{name}", Item {item})'
+        )
 
     def __str__(self):
         res = []
         a = self.__annotations__
         for i in a:
-            res += [f'{i}={getattr(self, i)}']
+            res += [f'{i}={toString(getattr(self, i))}']
         return f'{self.__class__.__name__}( {", ".join(res)} )'
 
     def __repr__(self):
